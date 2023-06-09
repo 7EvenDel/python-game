@@ -35,22 +35,28 @@ def play_game():
 
     while not game_over:
         print_board(board)
-        row = int(input('Enter the row (0-2): '))
-        col = int(input('Enter the column (0-2): '))
+        try:
+            row = int(input('Введіть рядок (0-2): '))
+            col = int(input('Введіть колонку (0-2): '))
 
-        if board[row][col] == ' ':
-            board[row][col] = current_player
-            if is_winner(board, current_player):
-                print_board(board)
-                print(f'Player {current_player} wins!')
-                game_over = True
-            elif is_board_full(board):
-                print_board(board)
-                print('It\'s a tie!')
-                game_over = True
+            if row < 0 or row > 2 or col < 0 or col > 2:
+                raise ValueError()
+
+            if board[row][col] == ' ':
+                board[row][col] = current_player
+                if is_winner(board, current_player):
+                    print_board(board)
+                    print(f'Гравець {current_player} ПЕРЕМІГ!')
+                    game_over = True
+                elif is_board_full(board):
+                    print_board(board)
+                    print('Нічия!')
+                    game_over = True
+                else:
+                    current_player = 'O' if current_player == 'X' else 'X'
             else:
-                current_player = 'O' if current_player == 'X' else 'X'
-        else:
-            print('Invalid move. Try again.')
+                print('Недійсний хід. Спробуйте знову.')
+        except ValueError:
+            print('Неправильне введення. Спробуйте знову.')
 
 play_game()
